@@ -1,0 +1,7 @@
+item.smanager:vertex_selection_tool=顶点选取工具
+item.smanager:structure_rotation_tool=结构旋转工具
+item.smanager:completion_tool=完成
+item.smanager:cancellation_tool=取消
+item.smanager:extension_tool=扩展工具
+item.smanager:contraction_tool=收缩工具
+item.smanager:move_tool=移动工具

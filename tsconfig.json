@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ES2022",
+        "outDir": "./dist",
+        "rootDir": "./scripts",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*",
+        "dist",
+        "scripts/lib/math/**/*"
+    ],
+    "include": [
+        "scripts/**/*"
+    ]
+}

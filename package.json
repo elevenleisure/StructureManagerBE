@@ -1,0 +1,24 @@
+{
+  "name": "mcscript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "node ./script/test.ts",
+    "build": "./build.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@minecraft/math": "^2.4.0",
+    "@minecraft/server": "^2.8.0",
+    "@minecraft/server-gametest": "^1.0.0-beta.1.21.60-preview.24",
+    "@minecraft/server-ui": "^2.1.0",
+    "@minecraft/vanilla-data": "^1.26.30"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.0"
+  }
+}

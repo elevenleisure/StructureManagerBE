@@ -1,0 +1,57 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "结构管理器",
+        "description": "方便地管理世界上的结构。",
+        "uuid": "b3caacd0-3dc0-48b7-89e1-a31cb0b79217",
+        "version": [
+            1,
+            0,
+            0
+        ],
+        "min_engine_version": [
+            1,
+            26,
+            30
+        ]
+    },
+    "modules": [
+        {
+            "type": "data",
+            "uuid": "f013bb8e-5557-46d5-a4eb-4f50fac57105",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "type": "script",
+            "uuid": "80670140-db5c-45d8-9b9f-ac1074a1769e",
+            "version": [
+                1,
+                0,
+                0
+            ],
+            "entry": "scripts/main.js"
+        }
+    ],
+    "dependencies": [
+        {
+            "module_name": "@minecraft/server",
+            "version": "2.8.0"
+        },
+        {
+            "module_name": "@minecraft/server-ui",
+            "version": "2.1.0"
+        },
+        {
+            "uuid": "015e08d4-39dc-4053-be8d-0a07c58fd106",
+            "version": "1.0.0"
+        }
+    ],
+    "capabilities": [
+        "script_eval"
+    ]
+    
+}

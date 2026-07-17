@@ -1,0 +1,30 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "结构管理器",
+        "description": "方便地管理世界上的结构。\n此包为资源包。",
+        "uuid": "015e08d4-39dc-4053-be8d-0a07c58fd106",
+        "version": [
+            1,
+            0,
+            0
+        ],
+        "min_engine_version": [
+            1,
+            26,
+            30
+        ]
+    },
+    "modules": [
+        {
+            "description": "r",
+            "type": "resources",
+            "uuid": "474ba8b4-1251-4e78-a2e2-762cc74c72c6",
+            "version": [
+                1,
+                6,
+                2
+            ]
+        }
+    ]
+}

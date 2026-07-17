@@ -1,0 +1,27 @@
+{
+    "resource_pack_name": "smanager",
+    "texture_name": "atlas.items",
+    "texture_data": {
+        "smanager:vertex_selection_tool": {
+            "textures": "textures/items/vertex_selection_tool"
+        },
+        "smanager:structure_rotation_tool": {
+            "textures": "textures/items/structure_rotation_tool"
+        },
+        "smanager:completion_tool": {
+            "textures": "textures/items/completion_tool"
+        },
+        "smanager:cancellation_tool": {
+            "textures": "textures/items/cancellation_tool"
+        },
+        "smanager:extension_tool": {
+            "textures": "textures/items/extension_tool"
+        },
+        "smanager:contraction_tool": {
+            "textures": "textures/items/contraction_tool"
+        },
+        "smanager:move_tool": {
+            "textures": "textures/items/move_tool"
+        }
+    }
+}

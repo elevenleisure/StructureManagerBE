@@ -1,0 +1,7 @@
+item.smanager:vertex_selection_tool=vertex selection tool
+item.smanager:structure_rotation_tool=structure rotation tool
+item.smanager:completion_tool=complete
+item.smanager:cancellation_tool=cancel
+item.smanager:extension_tool=extension tool
+item.smanager:contraction_tool=contraction tool
+item.smanager:move_tool=movement tool
