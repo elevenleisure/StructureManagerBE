@@ -11,7 +11,6 @@ export function getPlayerInventory(player: Player) {
 export function saveHotbar(player: Player) {
     const inventory = getPlayerInventory(player);
     playerHotbar.set(player.name, Array.from({ length: 9 }, (_, i) => inventory.getItem(i)));
-    // logit(playerHotbars.get(player.name));
 }
 export function clearHotbar(player: Player) {
     const inventory = getPlayerInventory(player);
@@ -22,7 +21,6 @@ export function clearHotbar(player: Player) {
 export function restoreHotbar(player: Player) {
     const inventory = getPlayerInventory(player);
     const hotbar = playerHotbar.get(player.name);
-    // logit(playerHotbar.get(player.name));
     if (!hotbar) return;
 
     Array.from({ length: 9 }).forEach((_, i) => {

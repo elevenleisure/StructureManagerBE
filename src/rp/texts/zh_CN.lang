@@ -5,3 +5,179 @@ item.smanager:cancellation_tool=取消
 item.smanager:extension_tool=扩展工具
 item.smanager:contraction_tool=收缩工具
 item.smanager:move_tool=移动工具
+
+ui.common.ok=确定
+ui.common.yes=确定
+ui.common.no=取消
+ui.common.close=关闭
+ui.common.cancel=取消
+ui.common.search=搜索
+ui.common.next=下一步
+
+ui.browse.title=总览
+ui.browse.create=新建结构
+ui.browse.search=搜索结构
+ui.browse.structure.title=结构
+ui.browse.structure.total=总共有 %s 个结构可用。
+ui.browse.structure.view=查看
+ui.browse.structure.structureInformation.new.namespace= 命名空间：§d%s
+ui.browse.structure.structureInformation.new.blocks= 方块数量：§2%s
+ui.browse.structure.structureInformation.invalid=§b§l%1§r\n命名空间： §d%2§r §c该结构处于无效状态§r
+ui.browse.structure.structureInformation=§b§l%1§r\n命名空间： §d%2§r 方块数量：§2%3§r
+ui.browse.structure.page.information=第 %1 / %2 页
+ui.browse.structure.page.previous=上一页
+ui.browse.structure.page.next=下一页
+ui.browse.browseAll=浏览所有结构
+ui.browse.useNewForm=使用新表单
+ui.browse.search.description=欲搜索字段
+
+ui.browse.useNewForm.title=提示
+ui.browse.useNewForm.message=新的 Ore UI 风格表单仍然在测试中，在使用过程中可能会出现一些未知的问题。\n\n目前已知问题：\n在“基础游戏版本”（常见于由模板创建的世界）低于26.30时新表单无法正常工作。\n\n如果新表单出现问题可以使用命令/smanager-config useNewForm false手动关闭。你确定要继续吗？
+
+ui.structure.action.invalid.id=无效的结构ID
+ui.structure.action.title=结构
+ui.structure.action.structureInformation=§b%1§r\n命名空间：§d%2§r\n尺寸：§c%3§rx§a%4§rx§9%5§r （共计%6个方块）§r
+ui.structure.action.structureInformation.new=尺寸：§c%1§rx§a%2§rx§9%3§r （共计%4个方块）`
+ui.structure.action.place=放置
+ui.structure.action.rename=重命名
+ui.structure.action.clone=复制
+ui.structure.action.delete=删除
+
+ui.structure.action.saveMode.label=保存模式
+ui.structure.action.saveMode.world.label=保存至世界
+ui.structure.action.saveMode.world.description=新的结构将会被永久保存到世界中。
+ui.structure.action.saveMode.memory.label=保存至内存
+ui.structure.action.saveMode.memory.description=新的结构将会被临时保存至内存中。一旦你退出了世界，它就会永远消失。
+ui.structure.action.saveMode.toggle.label=保存至世界
+ui.structure.action.saveMode.toggle.tooltip=若开启，新的结构将会被永久保存到世界中。若关闭，新的结构将会被临时保存至内存中。一旦你退出了世界，它就会永远消失。
+ui.structure.action.waterlogged.toggle.label=含水方块
+ui.structure.action.waterlogged.toggle.tooltip=加载结构时，使可含水方块在加载区域的水源方块上可以加载为含水方块。
+ui.structure.action.include.blocks.toggle.label=包括方块
+ui.structure.action.include.entities.toggle.label=包括实体
+ui.structure.action.rotation.label=旋转
+ui.structure.action.rotation.0.label=无旋转
+ui.structure.action.rotation.90.label=旋转90°
+ui.structure.action.rotation.180.label=旋转180°
+ui.structure.action.rotation.270.label=旋转270°
+ui.structure.action.mirror.label=镜像模式
+ui.structure.action.mirror.none.label=无镜像
+ui.structure.action.mirror.x.label=x
+ui.structure.action.mirror.z.label=z
+ui.structure.action.mirror.xz.label=xz
+ui.structure.action.animation.label=动画模式
+ui.structure.action.animation.none.label=无动画
+ui.structure.action.animation.blocks.label=逐方块
+ui.structure.action.animation.layers.label=逐层
+ui.structure.action.animation.seconds.label=动画秒数
+ui.structure.action.integrity.label=完整度
+ui.structure.action.integrity.seed.label=完整度种子
+ui.structure.action.integrity.seed.random.label=随机
+
+ui.structure.action.rename.title=重命名
+ui.structure.action.rename.new=新的结构ID
+
+ui.structure.action.clone.title=复制
+ui.structure.action.clone.new=新的结构ID
+
+ui.structure.action.delete.title=删除
+ui.structure.action.delete.message=你确定要删除结构 %s 吗？
+
+ui.error.title=错误
+ui.error.message.invalid.number=%s 必须是一个有效的数字。
+
+ui.structure.action.create.new.title=创建新结构
+ui.structure.action.create.new.from=起始点
+ui.structure.action.create.new.to=终止点
+ui.structure.action.create.new.pick=选取
+ui.structure.action.create.new.volume=体积尺寸
+ui.structure.action.create.new.option=保存选项
+
+ui.structure.action.create.1.title=创建新结构 - 1/4
+ui.structure.action.create.1.message=这会在你的世界中创建一个新的结构。\n\n
+ui.structure.action.create.1.structureId=欲保存的结构名
+
+ui.structure.action.create.1.override.title=覆盖？
+ui.structure.action.create.1.override.message=世界上已经存在一个名为 %s 的结构了，你确定要覆盖它吗？
+
+ui.structure.action.create.2.title=创建新结构 - 2/4
+ui.structure.action.create.2.message=确定结构的体积尺寸\n\n你要如何确定结构的体积尺寸？
+ui.structure.action.create.2.action.1=手动输入\n通过2个顶点确定区域
+ui.structure.action.create.2.action.2=手动输入\n通过位置和尺寸确定区域
+ui.structure.action.create.2.action.3=选取\n通过工具确定区域
+
+ui.structure.action.create.2.action.1.message=通过2个顶点确定区域\n\n
+ui.structure.action.create.2.action.1.from.x=起始点x
+ui.structure.action.create.2.action.1.from.y=起始点y
+ui.structure.action.create.2.action.1.from.z=起始点z
+ui.structure.action.create.2.action.1.to.x=终止点x
+ui.structure.action.create.2.action.1.to.y=终止点y
+ui.structure.action.create.2.action.1.to.z=终止点z
+
+ui.structure.action.create.2.action.2.message=通过位置和尺寸确定区域\n\n
+ui.structure.action.create.2.action.2.location.x=起始点x
+ui.structure.action.create.2.action.2.location.y=起始点y
+ui.structure.action.create.2.action.2.location.z=起始点z
+ui.structure.action.create.2.action.2.size.x=尺寸x
+ui.structure.action.create.2.action.2.size.y=尺寸y
+ui.structure.action.create.2.action.2.size.z=尺寸z
+
+ui.structure.action.create.3.title=创建新结构 - 3/4
+ui.structure.action.create.3.message=额外的保存选项\n\n
+
+ui.structure.action.create.4.title=创建新结构 - 4/4
+ui.structure.action.create.4.message=你的结构已经保存。
+ui.structure.action.create.4.error.title=发生致命错误！
+ui.structure.action.create.4.error.message=你的结构在保存时出现了异常情况，请重新尝试。\n\n错误详情：\n%s
+
+ui.structure.action.place.new.title=放置结构
+ui.structure.action.place.new.placeLocation=放置位置
+ui.structure.action.place.new.pick=选取
+ui.structure.action.place.new.placeLocation=位置
+ui.structure.action.place.new.animation=动画
+ui.structure.action.place.new.integrity=完整度
+ui.structure.action.place.new.option=附加选项
+
+ui.structure.action.place.1.title=放置结构 - 1/3
+ui.structure.action.place.1.message2=这会在指定的位置放置结构。\n\n你要如何确定放置位置与旋转？
+ui.structure.action.place.1.action.1=手动输入
+ui.structure.action.place.1.action.2=选取\n通过工具确定放置位置与旋转
+
+ui.structure.action.place.1.message=输入放置位置和旋转。\n\n
+ui.structure.action.place.1.placeLocation.x=放置位置x
+ui.structure.action.place.1.placeLocation.y=放置位置y
+ui.structure.action.place.1.placeLocation.z=放置位置z
+
+ui.structure.action.place.2.title=放置结构 - 2/3
+ui.structure.action.place.2.message=选择额外放置选项。
+
+ui.structure.action.place.3.title=放置结构 - 3/3
+ui.structure.action.place.3.message=你的结构已经放置。
+ui.structure.action.place.3.error.title=发生致命错误！
+ui.structure.action.place.3.error.message=你的结构在加载时出现了异常情况，请重新尝试。\n\n错误详情：\n%s
+
+tool.vertexSelection.selectSave.actionbarMessage=对方块左键/长按 - 选取第一个点\n对方块右键/点击 - 选取第二个点
+tool.vertexSelection.selectSave.message.1=将第一选取点设为：(%1, %2, %3)
+tool.vertexSelection.selectSave.message.2=将第二选取点设为：(%1, %2, %3)
+
+tool.extension.selectSave.actionbarMessage=右键/使用 - 使选区往面向方向扩展1格
+tool.extension.selectSave.fail.message=你还没有选择一个区域
+
+tool.contraction.selectSave.actionbarMessage=右键/使用 - 使选区往面向方向收缩1格
+tool.contraction.selectSave.fail.message=你还没有选择一个区域
+
+tool.move.selectSave.actionbarMessage=对方块左键/长按 - 将区域的第一个点移动至方块位置\n对方块右键/点击 - 将区域的第二个点移动至方块位置
+tool.move.selectSave.message.1=将第一选取点移动至：(%1, %2, %3)
+tool.move.selectSave.message.2=将第二选取点移动至：(%1, %2, %3)
+tool.move.selectSave.fail.message=你还没有选择一个区域
+
+tool.complete.selectSave.actionbarMessage=右键/使用 - 完成
+tool.complete.selectSave.fail.message=你还没有选择一个区域
+
+tool.cancellation.selectSave.actionbarMessage=右键/使用 - 取消
+
+tool.vertexSelection.selectPlace.actionbarMessage=对方块右键/点击 - 选取位置
+tool.vertexSelection.selectPlace.message=将位置设为：(%1, %2, %3)
+tool.complete.selectPlace.fail.message=你还没有选取位置
+
+tool.structureRotation.selectPlace.actionbarMessage=右键/使用 - 下一个旋转模式
+tool.structureRotation.selectPlace.message=旋转模式：%s

@@ -1,6 +1,7 @@
 import { CustomForm, UIRawMessage } from "@minecraft/server-ui";
-import { DialogDropdown, DialogDropdownItem, DialogInteractiveComponent, DialogTextField } from "../../lib/ui/dialogComponent.js";
-import { StructureSaveMode, Vector3 } from "@minecraft/server";
+import { DialogComponentGroup, DialogDropdown, DialogDropdownItem, DialogInteractiveComponent, DialogTextField } from "../../lib/ui/dialogComponent.js";
+import { RawMessage, StructureSaveMode, Vector3 } from "@minecraft/server";
+import { RawMessageBuilder } from "../../utils/str.js";
 
 export class NumberTextField extends DialogTextField {
     constructor(label: string | UIRawMessage, defaultValue?: number) {
@@ -20,36 +21,28 @@ export class NumberTextField extends DialogTextField {
     }
 }
 
-export class Vector3TextField extends DialogInteractiveComponent {
+export class Vector3TextField extends DialogComponentGroup {
     protected xTextField: DialogTextField;
     protected yTextField: DialogTextField;
     protected zTextField: DialogTextField;
     private _changed: boolean = false;
 
-    constructor(label: string) {
-        super(label);
-        this.xTextField = new DialogTextField(`${label}x`, "0");
-        this.yTextField = new DialogTextField(`${label}y`, "0");
-        this.zTextField = new DialogTextField(`${label}z`, "0");
+    constructor(label: UIRawMessage) {
+        super();
+        function getRawMessage(rawMessage: RawMessage, text: string): RawMessage {
+            const raw: RawMessage = {rawtext: []};
+            raw.rawtext?.push(rawMessage);
+            raw.rawtext?.push(RawMessageBuilder.text(text));
+            return raw;
+        }
+        this.xTextField = new DialogTextField(getRawMessage(label, "x"), "0");
+        this.yTextField = new DialogTextField(getRawMessage(label, "y"), "0");
+        this.zTextField = new DialogTextField(getRawMessage(label, "z"), "0");
         const change = () => this._changed = true;
         this.xTextField.onChange = change;
         this.yTextField.onChange = change;
         this.zTextField.onChange = change;
-        this._label.subscribe(raw => {
-            this.xTextField.label = `${raw.text}x`;
-            this.yTextField.label = `${raw.text}y`;
-            this.zTextField.label = `${raw.text}z`;
-        });
-        this._disabled.subscribe(v => {
-            this.xTextField.disabled = v;
-            this.yTextField.disabled = v;
-            this.zTextField.disabled = v;
-        });
-        this._visible.subscribe(v => {
-            this.xTextField.visible = v;
-            this.yTextField.visible = v;
-            this.zTextField.visible = v;
-        });
+        this.push(this.xTextField, this.yTextField, this.zTextField);
     }
 
     public get changed() {
@@ -83,23 +76,16 @@ export class Vector3TextField extends DialogInteractiveComponent {
         this.yTextField.text = value.y.toString();
         this.zTextField.text = value.z.toString();
     }
-
-    public addToCustomForm(customForm: CustomForm): void {
-        this.xTextField.addToCustomForm(customForm);
-        this.yTextField.addToCustomForm(customForm);
-        this.zTextField.addToCustomForm(customForm);
-    }
-    
 }
 
 export class StructureSaveModeDropdown extends DialogDropdown {
     constructor() {
-        super("保存模式", [
-            new DialogDropdownItem("保存至世界"), new DialogDropdownItem("保存至内存")
+        super(RawMessageBuilder.translate("ui.structure.action.saveMode.label"), [
+            new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.saveMode.world.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.saveMode.memory.label"))
         ]);
-        this.description = "新的结构将会被永久保存到世界中";
+        this.description = RawMessageBuilder.translate("ui.structure.action.saveMode.world.description");
         this.onChange = value => {
-            this.description = value === 0 ? "新的结构将会被永久保存到世界中": "新的结构将会被临时保存至内存中。一旦你退出了世界，它就会永远消失。";
+            this.description = value === 0 ? RawMessageBuilder.translate("ui.structure.action.saveMode.world.description"): RawMessageBuilder.translate("ui.structure.action.saveMode.memory.description");
         }
     }
 

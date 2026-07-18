@@ -142,10 +142,10 @@ export class StructureRotationTool extends Tool {
 
         this.onUse = player => {
             this.currentSelection = this.currentSelection === 3 ? 0 : this.currentSelection + 1;
-            tell(player, `旋转模式：${StructureRotations[this.currentSelection].text}`);
+            tell(player, {translate: "tool.structureRotation.selectPlace.message", with: RawMessageBuilder.translate(StructureRotations[this.currentSelection].translate)});
         };
 
-        this.actionbarMessage = RawMessageBuilder.text("右键/使用 - 下一个旋转模式");
+        this.actionbarMessage = RawMessageBuilder.translate("tool.structureRotation.selectPlace.actionbarMessage");
     }
 
     public get structureRotation() {
@@ -160,7 +160,7 @@ export class CompletionTool extends Tool {
         this.item = new ItemStack("smanager:completion_tool");
         this.item.lockMode = ItemLockMode.slot;
 
-        this.actionbarMessage = RawMessageBuilder.text("右键/使用 - 完成");
+        this.actionbarMessage = RawMessageBuilder.translate("tool.complete.selectSave.actionbarMessage");
     }
 }
 
@@ -171,7 +171,7 @@ export class CancellationTool extends Tool {
         this.item = new ItemStack("smanager:cancellation_tool");
         this.item.lockMode = ItemLockMode.slot;
 
-        this.actionbarMessage = RawMessageBuilder.text("右键/使用 - 取消");
+        this.actionbarMessage = RawMessageBuilder.translate("tool.cancellation.selectSave.actionbarMessage");
     }
 }
 
@@ -182,7 +182,7 @@ export class ExtensionTool extends Tool {
         this.item = new ItemStack("smanager:extension_tool");
         this.item.lockMode = ItemLockMode.slot;
 
-        this.actionbarMessage = RawMessageBuilder.text("右键/使用 - 使选区往面向方向扩展1格");
+        this.actionbarMessage = RawMessageBuilder.translate("tool.extension.selectSave.actionbarMessage");
     }
 }
 
@@ -193,7 +193,7 @@ export class ContractionTool extends Tool {
         this.item = new ItemStack("smanager:contraction_tool");
         this.item.lockMode = ItemLockMode.slot;
 
-        this.actionbarMessage = RawMessageBuilder.text("右键/使用 - 使选区往面向方向收缩1格");
+        this.actionbarMessage = RawMessageBuilder.translate("tool.contraction.selectSave.actionbarMessage");
     }
 }
 
@@ -204,7 +204,7 @@ export class MoveTool extends Tool {
         this.item = new ItemStack("smanager:move_tool");
         this.item.lockMode = ItemLockMode.slot;
 
-        this.actionbarMessage = RawMessageBuilder.text("对方块左键/长按 - 将区域的第一个点移动至方块位置\n对方块右键/点击 - 将区域的第二个点移动至方块位置");
+        this.actionbarMessage = RawMessageBuilder.translate("tool.move.selectSave.actionbarMessage");
     }
 }
 

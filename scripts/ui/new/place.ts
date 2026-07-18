@@ -6,18 +6,19 @@ import { loadStructure, StructureAnimationModes, StructureMirrorAxes, StructureR
 import { showError, showStructureAction } from "./browse.js";
 import { DataDrivenScreenClosedReason } from "@minecraft/server-ui";
 import { startSelectPlace } from "../../utils/preview.js";
+import { RawMessageBuilder } from "../../utils/str.js";
 
 export function showPlace(player: Player, structure: Structure) {
-    const dialog = new Dialog(player, "放置");
+    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.structure.action.place.new.title"));
 
-    const placeLocationTextField = new Vector3TextField("放置位置");
-    const rotation = new DialogDropdown("旋转", [
-        new DialogDropdownItem("无旋转"), new DialogDropdownItem("旋转90°"), new DialogDropdownItem("旋转180°"), new DialogDropdownItem("旋转270°")
+    const placeLocationTextField = new Vector3TextField(RawMessageBuilder.translate("ui.structure.action.place.new.placeLocation"));
+    const rotation = new DialogDropdown(RawMessageBuilder.translate("ui.structure.action.rotation.label"), [
+        new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.rotation.0.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.rotation.90.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.rotation.180.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.rotation.270.label"))
     ]);
-    const mirror = new DialogDropdown("镜像", [
-        new DialogDropdownItem("无镜像"), new DialogDropdownItem("x"), new DialogDropdownItem("z"), new DialogDropdownItem("xz")
+    const mirror = new DialogDropdown(RawMessageBuilder.translate("ui.structure.action.mirror.label"), [
+        new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.mirror.none.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.mirror.x.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.mirror.z.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.mirror.xz.label"))
     ]);
-    const pickPlaceLocation = new DialogButton("选取", async () => {
+    const pickPlaceLocation = new DialogButton(RawMessageBuilder.translate("ui.structure.action.place.new.pick"), async () => {
         try {
             const { placeLocation, structureRotationIndex } = await startSelectPlace(player, structure.size, placeLocationTextField.changed ? placeLocationTextField.valueOrUndefined : undefined, rotation.currentItemIndex);
             placeLocationTextField.value = placeLocation;
@@ -26,28 +27,28 @@ export function showPlace(player: Player, structure: Structure) {
         dialog.show();
     }, true);
 
-    const animationMode = new DialogDropdown("动画模式", [
-        new DialogDropdownItem("无动画"), new DialogDropdownItem("逐方块"), new DialogDropdownItem("逐层")
+    const animationMode = new DialogDropdown(RawMessageBuilder.translate("ui.structure.action.animation.label"), [
+        new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.animation.none.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.animation.blocks.label")), new DialogDropdownItem(RawMessageBuilder.translate("ui.structure.action.animation.layers.label"))
     ]);
-    const animationSeconds = new NumberTextField("动画秒数", 0);
+    const animationSeconds = new NumberTextField(RawMessageBuilder.translate("ui.structure.action.animation.seconds.label"), 0);
     animationSeconds.visible = false;
     animationMode.onChange = index => {
         animationSeconds.visible = index !== 0;
     };
 
-    const integrity = new DialogSlider("完整度", 0, 100, 100);
-    const integritySeed = new DialogTextField("完整度种子");
+    const integrity = new DialogSlider(RawMessageBuilder.translate("ui.structure.action.integrity.label"), 0, 100, 100);
+    const integritySeed = new DialogTextField(RawMessageBuilder.translate("ui.structure.action.integrity.seed.label"));
     integritySeed.visible = false;
     integrity.onChange = value => {
         integritySeed.visible = value !== 100;
     }
 
-    const includeBlocks = new DialogToggle("包括方块", true);
-    const includeEntities = new DialogToggle("包括实体", true);
-    const waterlogged = new DialogToggle("含水方块");
-    waterlogged.description = "加载结构时，使可含水方块在加载区域的水源方块上可以加载为含水方块。";
+    const includeBlocks = new DialogToggle(RawMessageBuilder.translate("ui.structure.action.include.blocks.toggle.label"), true);
+    const includeEntities = new DialogToggle(RawMessageBuilder.translate("ui.structure.action.include.entities.toggle.label"), true);
+    const waterlogged = new DialogToggle(RawMessageBuilder.translate("ui.structure.action.waterlogged.toggle.label"));
+    waterlogged.description = RawMessageBuilder.translate("ui.structure.action.waterlogged.toggle.tooltip");
 
-    const placeButton = new DialogButton("放置", () => {
+    const placeButton = new DialogButton(RawMessageBuilder.translate("ui.common.ok"), () => {
         try {
             loadStructure(
                 structure.id,
@@ -69,7 +70,7 @@ export function showPlace(player: Player, structure: Structure) {
     }, true);
 
     dialog.add(
-        new DialogHeader("位置"),
+        new DialogHeader(RawMessageBuilder.translate("ui.structure.action.place.new.placeLocation")),
         new DialogSpacer(),
         placeLocationTextField,
         rotation,
@@ -77,15 +78,15 @@ export function showPlace(player: Player, structure: Structure) {
         new DialogSpacer(),
         pickPlaceLocation,
         new DialogSpacer(),
-        new DialogHeader("动画"),
+        new DialogHeader(RawMessageBuilder.translate("ui.structure.action.place.new.animation")),
         new DialogSpacer(),
         animationMode,
         animationSeconds,
-        new DialogHeader("完整度"),
+        new DialogHeader(RawMessageBuilder.translate("ui.structure.action.place.new.integrity")),
         new DialogSpacer(),
         integrity,
         integritySeed,
-        new DialogHeader("附加选项"),
+        new DialogHeader(RawMessageBuilder.translate("ui.structure.action.place.new.option")),
         new DialogSpacer(),
         includeBlocks,
         includeEntities,

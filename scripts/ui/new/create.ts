@@ -6,14 +6,15 @@ import { StructureSaveModeDropdown, Vector3TextField } from "./component.js";
 import { hasStructure, overrideStructure } from "../../utils/structure.js";
 import { showBrowse, showError, showStructureAction } from "./browse.js";
 import { DataDrivenScreenClosedReason } from "@minecraft/server-ui";
+import { RawMessageBuilder } from "../../utils/str.js";
 
 export function showCreate(player: Player) {
-    const dialog = new Dialog(player, "新建结构");
+    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.structure.action.create.new.title"));
 
-    const structureIdTextField = new DialogTextField("欲保存的结构名");
-    const pos1TextFields = new Vector3TextField("起始点");
-    const pos2TextFields = new Vector3TextField("终止点");
-    const pickButton = new DialogButton("选取", async () => {
+    const structureIdTextField = new DialogTextField(RawMessageBuilder.translate("ui.structure.action.create.1.structureId"));
+    const pos1TextFields = new Vector3TextField(RawMessageBuilder.translate("ui.structure.action.create.new.from"));
+    const pos2TextFields = new Vector3TextField(RawMessageBuilder.translate("ui.structure.action.create.new.to"));
+    const pickButton = new DialogButton(RawMessageBuilder.translate("ui.structure.action.create.new.pick"), async () => {
         try {
             const { pos1, pos2 } = await startSelectSave(player, pos1TextFields.changed ? pos1TextFields.valueOrUndefined : undefined, pos2TextFields.changed ? pos2TextFields.valueOrUndefined : undefined);
             pos1TextFields.value = pos1;
@@ -21,10 +22,10 @@ export function showCreate(player: Player) {
         } catch (e) {}
         dialog.show();
     }, true);
-    const includeBlocksToggle = new DialogToggle("包括方块", true);
-    const includeEntitiesToggle = new DialogToggle("包括实体", true);
+    const includeBlocksToggle = new DialogToggle(RawMessageBuilder.translate("ui.structure.action.include.blocks.toggle.label"), true);
+    const includeEntitiesToggle = new DialogToggle(RawMessageBuilder.translate("ui.structure.action.include.entities.toggle.label"), true);
     const saveModeDropdown = new StructureSaveModeDropdown();
-    const saveButton = new DialogButton("保存", () => {
+    const saveButton = new DialogButton(RawMessageBuilder.translate("ui.common.ok"), () => {
         function tryOverrideStructure() {
             try {
                 overrideStructure(
@@ -42,12 +43,12 @@ export function showCreate(player: Player) {
             }
         }
         if (hasStructure(structureIdTextField.text)) {
-            new Dialog(player, "覆盖?")
+            new Dialog(player, RawMessageBuilder.translate("ui.structure.action.create.1.override.title"))
                 .add(
                     new DialogSpacer(),
-                    new DialogLabel(`世界上已经存在一个名为${structureIdTextField.text}的结构了，你确定要覆盖它吗？`),
+                    new DialogLabel(RawMessageBuilder.translate("ui.structure.action.create.1.override.message", structureIdTextField.text)),
                     new DialogSpacer(),
-                    new DialogButton("确定", () => tryOverrideStructure(), true)
+                    new DialogButton(RawMessageBuilder.translate("ui.common.yes"), () => tryOverrideStructure(), true)
                 )
                 .setOnClose(() => dialog.show())
                 .closeButton()
@@ -60,14 +61,14 @@ export function showCreate(player: Player) {
     dialog.add(
         structureIdTextField,
         new DialogSpacer(),
-        new DialogHeader("体积尺寸"),
+        new DialogHeader(RawMessageBuilder.translate("ui.structure.action.create.new.volume")),
         new DialogSpacer(),
         pos1TextFields,
         pos2TextFields,
         new DialogSpacer(),
         pickButton,
         new DialogDivider(),
-        new DialogHeader("保存选项"),
+        new DialogHeader(RawMessageBuilder.translate("ui.structure.action.create.new.option")),
         new DialogSpacer(),
         includeBlocksToggle,
         includeEntitiesToggle,

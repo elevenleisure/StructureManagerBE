@@ -115,6 +115,10 @@ export class DialogComponentGroup extends DialogComponent {
     public get components(): DialogComponent[] {
         return this._components;
     }
+
+    public push(...components: DialogComponent[]) {
+        this._components.push(...components);
+    }
     
     public addToCustomForm(customForm: CustomForm): void {
         this._components.forEach(component => {

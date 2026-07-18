@@ -5,14 +5,16 @@ import { DataDrivenScreenClosedReason } from "@minecraft/server-ui";
 import { cloneStructure, deleteStructure, getAllStructureId, praseStructureId, renameStructure } from "../../utils/structure.js";
 import { showCreate } from "./create.js";
 import { showPlace } from "./place.js";
+import { RawMessageBuilder } from "../../utils/str.js";
+import { StructureSaveModeDropdown } from "./component.js";
 
 export function showBrowse(player: Player) {
     const structureManager = world.structureManager;
     const structureComponentGroupMap: Record<string, DialogComponentGroup> = {};
 
-    const dialog = new Dialog(player, "总览");
+    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.browse.title"));
 
-    const search = new DialogTextField("搜索结构");
+    const search = new DialogTextField(RawMessageBuilder.translate("ui.browse.search"));
     search.onChange = text => {
         for (const key in structureComponentGroupMap) {
             if (Object.prototype.hasOwnProperty.call(structureComponentGroupMap, key)) {
@@ -25,7 +27,7 @@ export function showBrowse(player: Player) {
     dialog.add(
         search,
         new DialogSpacer(),
-        new DialogButton("新建结构", () => showCreate(player), true),
+        new DialogButton(RawMessageBuilder.translate("ui.browse.create"), () => showCreate(player), true),
         new DialogDivider(),
         new DialogSpacer(),
     );
@@ -34,13 +36,13 @@ export function showBrowse(player: Player) {
         const { namespace, path } = praseStructureId(structureId);
         const structure = structureManager.get(structureId);
         if (!structure || !structure.isValid) return;
-        const btn = new DialogButton("查看", () => showStructureAction(player, structure), true);
+        const btn = new DialogButton(RawMessageBuilder.translate("ui.browse.structure.view"), () => showStructureAction(player, structure), true);
         const group = new DialogComponentGroup(
             new DialogLabel(` §b${path}`),
             new DialogSpacer(),
-            new DialogLabel(` 命名空间：§d${namespace}`),
+            new DialogLabel(RawMessageBuilder.translate("ui.browse.structure.structureInformation.new.namespace", namespace)),
             new DialogSpacer(),
-            new DialogLabel(` 方块数量：§2${structure.size.x * structure.size.y * structure.size.z}`),
+            new DialogLabel(RawMessageBuilder.translate("ui.browse.structure.structureInformation.new.blocks", structure.size.x * structure.size.y * structure.size.z)),
             new DialogSpacer(),
             btn,
             new DialogDivider()
@@ -55,10 +57,10 @@ export function showBrowse(player: Player) {
 
 export function showStructureAction(player: Player, sourceStructure: Structure | string) {
     const structure = typeof sourceStructure === "string" ? world.structureManager.get(sourceStructure) : sourceStructure;
-    const dialog = new Dialog(player, `结构`);
+    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.browse.structure.title"));
     if (!structure || !structure.isValid) {
         dialog.add(
-            new DialogLabel("无效的结构ID！")
+            new DialogLabel(RawMessageBuilder.translate("ui.structure.action.invalid.id"))
         ).setOnClose(() => showBrowse(player)).closeButton().show();
         return;
     }
@@ -66,25 +68,25 @@ export function showStructureAction(player: Player, sourceStructure: Structure |
     dialog.add(
         new DialogLabel(` §b${path}`),
         new DialogSpacer(),
-        new DialogLabel(` 命名空间：§d${namespace}`),
+        new DialogLabel(RawMessageBuilder.translate("ui.browse.structure.structureInformation.new.namespace", namespace)),
         new DialogSpacer(),
-        new DialogLabel(`尺寸：§c${structure.size.x}§rx§a${structure.size.y}§rx§9${structure.size.z}§r （共计${structure.size.x * structure.size.y * structure.size.z}个方块）`),
+        new DialogLabel(RawMessageBuilder.translate("ui.structure.action.structureInformation.new", structure.size.x, structure.size.y, structure.size.z, structure.size.x * structure.size.y * structure.size.z)),
         new DialogSpacer(),
         new DialogDivider(),
-        new DialogButton("放置", () => showPlace(player, structure), true),
-        new DialogButton("重命名", () => showRenameStructure(player, structure), true),
-        new DialogButton("复制", () => showCloneStructure(player, structure), true),
-        new DialogButton("删除", () => showDeleteStructure(player, structure), true)
+        new DialogButton(RawMessageBuilder.translate("ui.structure.action.place"), () => showPlace(player, structure), true),
+        new DialogButton(RawMessageBuilder.translate("ui.structure.action.rename"), () => showRenameStructure(player, structure), true),
+        new DialogButton(RawMessageBuilder.translate("ui.structure.action.clone"), () => showCloneStructure(player, structure), true),
+        new DialogButton(RawMessageBuilder.translate("ui.structure.action.delete"), () => showDeleteStructure(player, structure), true)
     ).setOnClose(() => showBrowse(player)).closeButton().show();
 }
 
 function showRenameStructure(player: Player, structure: Structure) {
-    const dialog = new Dialog(player, "重命名");
-    const newStructureIdTextField = new DialogTextField("新的结构ID", structure.id);
+    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.structure.action.rename.title"));
+    const newStructureIdTextField = new DialogTextField(RawMessageBuilder.translate("ui.structure.action.rename.new"), structure.id);
     dialog.add(
         newStructureIdTextField,
         new DialogSpacer(),
-        new DialogButton("重命名", () => {
+        new DialogButton(RawMessageBuilder.translate("ui.common.ok"), () => {
             try {
                 renameStructure(structure, newStructureIdTextField.text);
             } catch (e) {
@@ -95,22 +97,16 @@ function showRenameStructure(player: Player, structure: Structure) {
 }
 
 function showCloneStructure(player: Player, structure: Structure) {
-    const dialog = new Dialog(player, "复制");
-    const newStructureIdTextField = new DialogTextField("新的结构ID", `${structure.id}的副本`);
-    const saveToWorldDropdown = new DialogDropdown("保存模式", [
-        new DialogDropdownItem("保存至世界"), new DialogDropdownItem("保存至内存")
-    ]);
-    saveToWorldDropdown.description = "复制的结构将会被永久保存到世界中";
-    saveToWorldDropdown.onChange = value => {
-        saveToWorldDropdown.description = value === 0 ? "复制的结构将会被永久保存到世界中": "复制的结构将会被临时保存至内存中。一旦你退出了世界，它就会永远消失。";
-    }
+    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.structure.action.clone.title"));
+    const newStructureIdTextField = new DialogTextField(RawMessageBuilder.translate("ui.structure.action.clone.new"), `${structure.id}(1)`);
+    const saveToWorldDropdown = new StructureSaveModeDropdown();
     dialog.add(
         newStructureIdTextField,
         saveToWorldDropdown,
         new DialogSpacer(),
-        new DialogButton("复制", () => {
+        new DialogButton(RawMessageBuilder.translate("ui.common.ok"), () => {
             try {
-                cloneStructure(structure, newStructureIdTextField.text, saveToWorldDropdown.currentItemIndex === 0 ? StructureSaveMode.World : StructureSaveMode.Memory);
+                cloneStructure(structure, newStructureIdTextField.text, saveToWorldDropdown.structureSaveMode);
             } catch (e) {
                 showError(player, (e as Error).message, () => dialog.show());
             }
@@ -119,11 +115,11 @@ function showCloneStructure(player: Player, structure: Structure) {
 }
 
 function showDeleteStructure(player: Player, structure: Structure) {
-    const dialog = new Dialog(player, "删除？");
+    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.structure.action.delete.title"));
     dialog.add(
-        new DialogLabel(`你确定要删除结构 ${structure.id} 吗？`),
+        new DialogLabel(RawMessageBuilder.translate("ui.structure.action.delete.message", structure.id)),
         new DialogSpacer(),
-        new DialogButton("确定", () => {
+        new DialogButton(RawMessageBuilder.translate("ui.common.ok"), () => {
             try {
                 deleteStructure(structure);
             } catch (e) {
@@ -134,7 +130,7 @@ function showDeleteStructure(player: Player, structure: Structure) {
 }
 
 export function showError(player: Player, errorMessage: string, callback?: (reason: DataDrivenScreenClosedReason) => void) {
-    new Dialog(player, "错误")
+    new Dialog(player, RawMessageBuilder.translate("ui.error.title"))
         .setOnClose(callback)
         .add(new DialogSpacer(), new DialogLabel(`§c${errorMessage}`))
         .closeButton()

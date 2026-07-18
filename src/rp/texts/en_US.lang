@@ -1,7 +1,182 @@
-item.smanager:vertex_selection_tool=vertex selection tool
-item.smanager:structure_rotation_tool=structure rotation tool
+item.smanager:vertex_selection_tool=vertex select tool
+item.smanager:structure_rotation_tool=structure rotate tool
 item.smanager:completion_tool=complete
 item.smanager:cancellation_tool=cancel
-item.smanager:extension_tool=extension tool
-item.smanager:contraction_tool=contraction tool
-item.smanager:move_tool=movement tool
+item.smanager:extension_tool=expand tool
+item.smanager:contraction_tool=contract tool
+item.smanager:move_tool=translate tool
+
+ui.common.ok=Ok
+ui.common.yes=Yes
+ui.common.no=No
+ui.common.close=Close
+ui.common.cancel=Cancel
+ui.common.search=Search
+ui.common.next=Next
+
+ui.browse.title=Overview
+ui.browse.create=Create Structure
+ui.browse.search=Search Structure
+ui.browse.structure.title=Structures
+ui.browse.structure.total=There is a total of %s structure available.
+ui.browse.structure.view=View
+ui.browse.structure.structureInformation.new.namespace= Namespace: §d%s
+ui.browse.structure.structureInformation.new.blocks= Number of blocks: §2%s
+ui.browse.structure.structureInformation.invalid=§b§l%1§r\nNamespace:  §d%2§r §cThis structure is inactive§r
+ui.browse.structure.structureInformation=§b§l%1§r\nNamespace:  §d%2§r Number of blocks: §2%3§r
+ui.browse.structure.page.information=Page %1 of %2
+ui.browse.structure.page.previous=Previous page
+ui.browse.structure.page.next=Next page
+ui.browse.browseAll=Browse all structures
+ui.browse.useNewForm=Use the new style form
+ui.browse.search.description=Search
+
+ui.browse.useNewForm.title=Notification
+ui.browse.useNewForm.message=The new style form is still being tested, so some unknown issues might pop up while using it.\n\nKnown problem: \nNew forms won't work properly if the 'base game version' (common in template-created worlds) is below 26.30.\n\nIf the new form causes problems, you can manually turn it off using the command /smanager-config useNewForm false.\nAre you sure you want to continue?
+
+ui.structure.action.invalid.id=Invalid structure ID.
+ui.structure.action.title=Structure
+ui.structure.action.structureInformation=§b%1§r\nNamespace: §d%2§r\nSize: §c%3§rx§a%4§rx§9%5§r (A total of %6 blocks)§r
+ui.structure.action.structureInformation.new=Size: §c%1§rx§a%2§rx§9%3§r (A total of %4 blocks)`
+ui.structure.action.place=Place
+ui.structure.action.rename=Rename
+ui.structure.action.clone=Clone
+ui.structure.action.delete=Delete
+
+ui.structure.action.saveMode.label=Save mode
+ui.structure.action.saveMode.world.label=Save to world
+ui.structure.action.saveMode.world.description=The new structure will be permanently saved in the world.
+ui.structure.action.saveMode.memory.label=Save to memory
+ui.structure.action.saveMode.memory.description=The new structure will be temporarily saved in memory. Once you leave the world, it will be gone forever.
+ui.structure.action.saveMode.toggle.label=Save to world
+ui.structure.action.saveMode.toggle.tooltip=If turned on, the new structure will be permanently saved in the world. If turned off, The new structure will be temporarily saved in memory. Once you leave the world, it will be gone forever.
+ui.structure.action.waterlogged.toggle.label=Waterlog Block
+ui.structure.action.waterlogged.toggle.tooltip=When loading the structure blocks that replace water become waterlogged instead of replacing blocks with air, creating air pockets.
+ui.structure.action.include.blocks.toggle.label=Include Block
+ui.structure.action.include.entities.toggle.label=Include entities
+ui.structure.action.rotation.label=Rotation
+ui.structure.action.rotation.0.label=No rotation
+ui.structure.action.rotation.90.label=90° clockwise
+ui.structure.action.rotation.180.label=180° clockwise
+ui.structure.action.rotation.270.label=270° clockwise
+ui.structure.action.mirror.label=Mirror
+ui.structure.action.mirror.none.label=None
+ui.structure.action.mirror.x.label=x
+ui.structure.action.mirror.z.label=z
+ui.structure.action.mirror.xz.label=xz
+ui.structure.action.animation.label=Animation Mode
+ui.structure.action.animation.none.label=None
+ui.structure.action.animation.blocks.label=Place by block
+ui.structure.action.animation.layers.label=Place by layer
+ui.structure.action.animation.seconds.label=Animation Time
+ui.structure.action.integrity.label=Structure Integrity
+ui.structure.action.integrity.seed.label=Structure Integrity Seed
+ui.structure.action.integrity.seed.random.label=Random
+
+ui.structure.action.rename.title=Rename
+ui.structure.action.rename.new=New structure ID
+
+ui.structure.action.clone.title=Clone
+ui.structure.action.clone.new=New structure ID
+
+ui.structure.action.delete.title=Delete
+ui.structure.action.delete.message=Are you sure you want to delete the structure %s?
+
+ui.error.title=Error
+ui.error.message.invalid.number=%s must be a valid number.
+
+ui.structure.action.create.new.title=Create structure
+ui.structure.action.create.new.from=From 
+ui.structure.action.create.new.to=To 
+ui.structure.action.create.new.pick=Pick
+ui.structure.action.create.new.volume=Position
+ui.structure.action.create.new.option=Option
+
+ui.structure.action.create.1.title=Create structure - 1/4
+ui.structure.action.create.1.message=This will create a new structure in your world.\n\n
+ui.structure.action.create.1.structureId=Structure Id
+
+ui.structure.action.create.1.override.title=Overwrite？
+ui.structure.action.create.1.override.message=An structure named %s already exists. Are you sure you want to overwrite it?
+
+ui.structure.action.create.2.title=Create structure - 2/4
+ui.structure.action.create.2.message=Determine the volume dimensions of the structure\n\nHow are you going to determine the volume dimensions of the structure?
+ui.structure.action.create.2.action.1=Input\nDetermine the area using two vertices
+ui.structure.action.create.2.action.2=Input\nDetermine the area by position and size
+ui.structure.action.create.2.action.3=Pick\nDetermine the area using the tool
+
+ui.structure.action.create.2.action.1.message=Determine the area using two vertices.\n\n
+ui.structure.action.create.2.action.1.from.x=From x
+ui.structure.action.create.2.action.1.from.y=From y
+ui.structure.action.create.2.action.1.from.z=From z
+ui.structure.action.create.2.action.1.to.x=To x
+ui.structure.action.create.2.action.1.to.y=To y
+ui.structure.action.create.2.action.1.to.z=To z
+
+ui.structure.action.create.2.action.2.message=Determine the area by position and size\n\n
+ui.structure.action.create.2.action.2.location.x=Location x
+ui.structure.action.create.2.action.2.location.y=Location y
+ui.structure.action.create.2.action.2.location.z=Location z
+ui.structure.action.create.2.action.2.size.x=Size x
+ui.structure.action.create.2.action.2.size.y=Size y
+ui.structure.action.create.2.action.2.size.z=Size z
+
+ui.structure.action.create.3.title=Create structure - 3/4
+ui.structure.action.create.3.message=Extra save options
+
+ui.structure.action.create.4.title=Create structure - 4/4
+ui.structure.action.create.4.message=Your structure has been saved.
+ui.structure.action.create.4.error.title=Error
+ui.structure.action.create.4.error.message=An error occurred while saving your structure. Please try again.\n\nError details: \n%s
+
+ui.structure.action.place.new.title=Place structure
+ui.structure.action.place.1.message2=This will place the structure at the specified location.\n\nHow do you want to determine the placement and rotation?
+ui.structure.action.place.1.action.1=Input
+ui.structure.action.place.1.action.2=Pick\nUse the tool to set position and rotation
+
+ui.structure.action.place.new.placeLocation=Placement location
+ui.structure.action.place.new.pick=Pick
+ui.structure.action.place.new.animation=Animation
+ui.structure.action.place.new.integrity=Integrity
+ui.structure.action.place.new.option=Options
+
+ui.structure.action.place.1.title=Place structure - 1/3
+ui.structure.action.place.1.message=Enter the placement position and rotation mode.\n\n
+ui.structure.action.place.1.placeLocation.x=Place location x
+ui.structure.action.place.1.placeLocation.y=Place location y
+ui.structure.action.place.1.placeLocation.z=Place location z
+
+ui.structure.action.place.2.title=Place structure - 2/3
+ui.structure.action.place.2.message=Extra save options
+
+ui.structure.action.place.3.title=Place structure - 3/3
+ui.structure.action.place.3.message=Your structure has been placed.
+ui.structure.action.place.3.error.title=Error
+ui.structure.action.place.3.error.message=An error occurred while placing your structure. Please try again.\n\nError details: \n%s
+
+tool.vertexSelection.selectSave.actionbarMessage=Hit on block - Select the first point\nUse on block - Select the the second point
+tool.vertexSelection.selectSave.message.1=Set the first selection point as: (%1, %2, %3)
+tool.vertexSelection.selectSave.message.2=Set the second selection point as: (%1, %2, %3)
+
+tool.extension.selectSave.actionbarMessage=Use - Make the selection expand 1 block in the facing direction
+tool.extension.selectSave.fail.message=You haven't chosen a region yet.
+
+tool.contraction.selectSave.actionbarMessage=Use - Make the selection shrink 1 block in the facing direction
+tool.contraction.selectSave.fail.message=You haven't chosen a region yet.
+
+tool.move.selectSave.actionbarMessage=Hit on block - Move the first point of the area to the block position\nUse on block - Move the second point of the area to the block position
+tool.move.selectSave.message.1=Move the first selection point to: (%1, %2, %3)
+tool.move.selectSave.message.2=Move the second selection point to: (%1, %2, %3)
+tool.move.selectSave.fail.message=You haven't chosen a region yet.
+
+tool.complete.selectSave.actionbarMessage=Use - Complete
+tool.complete.selectSave.fail.message=You haven't chosen a region yet.
+
+tool.cancellation.selectSave.actionbarMessage=Use - Cancel
+
+tool.vertexSelection.selectPlace.actionbarMessage=Use on block - Select the placement location
+tool.vertexSelection.selectPlace.message=Select the placement location to: (%1, %2, %3)
+tool.complete.selectPlace.fail.message=You haven't selected a placement location yet.
+
+tool.structureRotation.selectPlace.actionbarMessage=Use - Next rotation mode
+tool.structureRotation.selectPlace.message=Rotation mode: %s

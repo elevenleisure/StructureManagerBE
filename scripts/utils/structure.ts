@@ -25,28 +25,28 @@ export function padNamespace(structureId: string) {
 }
 
 export const StructureRotations = [
-    {rotation: StructureRotation.None, text: "无旋转"},
-    {rotation: StructureRotation.Rotate90, text: "旋转90°"},
-    {rotation: StructureRotation.Rotate180, text: "旋转180°"},
-    {rotation: StructureRotation.Rotate270, text: "旋转270°"}
+    {rotation: StructureRotation.None, translate: "ui.structure.action.rotation.0.label"},
+    {rotation: StructureRotation.Rotate90, translate: "ui.structure.action.rotation.90.label"},
+    {rotation: StructureRotation.Rotate180, translate: "ui.structure.action.rotation.180.label"},
+    {rotation: StructureRotation.Rotate270, translate: "ui.structure.action.rotation.270.label"}
 ];
 
 export const StructureAnimationModes = [
-    {animationMode: StructureAnimationMode.None, text: "无动画"},
-    {animationMode: StructureAnimationMode.Blocks, text: "逐方块"},
-    {animationMode: StructureAnimationMode.Layers, text: "逐层"},
+    {animationMode: StructureAnimationMode.None, translate: "ui.structure.action.animation.none.label"},
+    {animationMode: StructureAnimationMode.Blocks, translate: "ui.structure.action.animation.blocks.label"},
+    {animationMode: StructureAnimationMode.Layers, translate: "ui.structure.action.animation.layers.label"},
 ];
 
 export const StructureMirrorAxes = [
-    {mirrorAxis: StructureMirrorAxis.None, text: "无镜像"},
-    {mirrorAxis: StructureMirrorAxis.X, text: "x"},
-    {mirrorAxis: StructureMirrorAxis.Z, text: "z"},
-    {mirrorAxis: StructureMirrorAxis.XZ, text: "xz"}
+    {mirrorAxis: StructureMirrorAxis.None, translate: "ui.structure.action.mirror.none.label"},
+    {mirrorAxis: StructureMirrorAxis.X, translate: "ui.structure.action.mirror.x.label"},
+    {mirrorAxis: StructureMirrorAxis.Z, translate: "ui.structure.action.mirror.z.label"},
+    {mirrorAxis: StructureMirrorAxis.XZ, translate: "ui.structure.action.mirror.xz.label"}
 ]
 
 export function saveStructure(structureId: string, dimension: Dimension, from: Vector3, to: Vector3, includeBlocks?: boolean, includeEntities?: boolean, saveMode?: StructureSaveMode) {
     structureId = padNamespace(structureId);
-    if (hasStructure(structureId)) throw new Error(`重复的结构ID：${structureId}`);
+    if (hasStructure(structureId)) throw new Error(`Repetitive structure Id: ${structureId}`);
     return overrideStructure(structureId, dimension, from, to, includeBlocks, includeEntities, saveMode);
 }
 
@@ -80,7 +80,7 @@ export function loadStructure(structureId: string, dimension: Dimension, locatio
 export function deleteStructure(structure: Structure | string) {
     if (typeof structure === "string") structure = padNamespace(structure);
     if (!world.structureManager.delete(structure)) {
-        throw new Error("无法删除该结构");
+        throw new Error("The structure can not be deleted.");
     }
 }
 
@@ -89,7 +89,7 @@ export function cloneStructure(structure: Structure | string, structureId: strin
     if (typeof structure === "string") {
         let _structure = world.structureManager.get(structure);
         if (_structure && _structure.isValid) sourceStructure = _structure;
-        else throw new Error(`无效的结构ID：${structure}`);
+        else throw new Error(`Invalid structure Id: ${structure}`);
     } else {
         sourceStructure = structure
     }
@@ -97,7 +97,7 @@ export function cloneStructure(structure: Structure | string, structureId: strin
 
 
     const newStructureId = `${namespace}:${path}`;
-    if (hasStructure(newStructureId)) throw new Error(`重复的结构ID：${structure}`);
+    if (hasStructure(newStructureId)) throw new Error(`Repetitive structure Id: ${structure}`);
     
     sourceStructure.saveAs(newStructureId, saveMode)
 }
@@ -108,8 +108,7 @@ export function renameStructure(structure: Structure | string, newStructureId: s
         cloneStructure(structure, newStructureId);
         deleteStructure(structure)
     } catch (e) {
-        deleteStructure(newStructureId);
-        throw new Error("该结构无法被重命名");
+        throw new Error("The structure can not be renamed.");
     }
 }
 

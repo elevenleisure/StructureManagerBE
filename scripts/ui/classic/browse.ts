@@ -4,17 +4,18 @@ import { showCreateForm } from "./create.js";
 import { cloneStructure, deleteStructure, getAllStructureId, praseStructureId, renameStructure } from "../../utils/structure.js";
 import { showPlaceForm } from "./place.js";
 import { Config, setPlayerConfig } from "../../utils/config.js";
+import { RawMessageBuilder } from "../../utils/str.js";
 
 
 export async function showBrowseForm(player: Player) {
     const response = await new ActionFormData()
-        .title("总览")
-        .button("新建结构")
-        .button("搜索结构")
-        .button("浏览所有结构")
+        .title(RawMessageBuilder.translate("ui.browse.title"))
+        .button(RawMessageBuilder.translate("ui.browse.create"))
+        .button(RawMessageBuilder.translate("ui.browse.search"))
+        .button(RawMessageBuilder.translate("ui.browse.browseAll"))
         .divider()
-        .button("使用新表单")
-        .button("关闭")
+        .button(RawMessageBuilder.translate("ui.browse.useNewForm"))
+        .button(RawMessageBuilder.translate("ui.common.close"))
         .show(player);
     if (response.canceled) return;
     switch (response.selection) {
@@ -23,9 +24,9 @@ export async function showBrowseForm(player: Player) {
             break;
         case 1:
             new ModalFormData()
-                .title("搜索")
-                .textField("欲搜索字段", "")
-                .submitButton("完成")
+                .title(RawMessageBuilder.translate("ui.common.search"))
+                .textField(RawMessageBuilder.translate("ui.browse.search.description"), "")
+                .submitButton(RawMessageBuilder.translate("ui.common.ok"))
                 .show(player)
                 .then(response => {
                     if (response.canceled) {
@@ -62,9 +63,9 @@ export async function showBrowseStructureForm(player: Player, search?: string) {
 
 function showBrowseStructureFormNext(player: Player, currentPage: number, maxPage: number, structureIds: string[]) {
     const form = new ActionFormData()
-        .title("结构")
-        .body(`总共有 ${structureIds.length} 个结构可用。`)
-        .label(`第${currentPage}/${maxPage}页`);
+        .title(RawMessageBuilder.translate("ui.browse.structure.title"))
+        .body(RawMessageBuilder.translate("ui.browse.structure.total", structureIds.length))
+        .label(RawMessageBuilder.translate("ui.browse.structure.page.information", currentPage, maxPage));
     let itemCount = 0;
     let hasPreviousButton = maxPage !== 1 && currentPage > 1;
     let hasNextButton = maxPage !== 1 && currentPage < maxPage;
@@ -77,15 +78,15 @@ function showBrowseStructureFormNext(player: Player, currentPage: number, maxPag
         const structure = world.structureManager.get(element);
         if (!(structure && structure.isValid)) {
             const { namespace, path } = praseStructureId(element);
-            form.button(`§b§l${path}§r\n命名空间： §d${namespace}§r §c该结构处于无效状态`);
+            form.button(RawMessageBuilder.translate("ui.browse.structure.structureInformation.invalid", path, namespace));
         } else {
             const { namespace, path } = praseStructureId(structure.id);
-            form.button(`§b§l${path}§r\n命名空间： §d${namespace}§r 方块数量：§2${structure.size.x * structure.size.y * structure.size.z}§r`);
+            form.button(RawMessageBuilder.translate("ui.browse.structure.structureInformation", path, namespace, structure.size.x * structure.size.y * structure.size.z));
         }
         itemCount++;
     }
-    if (hasPreviousButton) form.button("上一页");
-    if (hasNextButton) form.button("下一页");
+    if (hasPreviousButton) form.button(RawMessageBuilder.translate("ui.browse.structure.page.previous"));
+    if (hasNextButton) form.button(RawMessageBuilder.translate("ui.browse.structure.page.next"));
     form.show(player).then(response => {
         if (response.canceled) {
             showBrowseForm(player);
@@ -118,21 +119,21 @@ export function showStructureActionForm(player: Player, sourceStructure: Structu
     const structure = typeof sourceStructure === "string" ? world.structureManager.get(sourceStructure) : sourceStructure;
     if (!structure || !structure.isValid) {
         new ActionFormData()
-            .body("无效的结构ID")
-            .button("确定")
+            .body(RawMessageBuilder.translate("ui.structure.action.invalid.id"))
+            .button(RawMessageBuilder.translate("ui.common.ok"))
             .show(player)
             .then(() => showBrowseStructureForm(player));
         return;
     }
     const { namespace, path } = praseStructureId(structure.id);
     new ActionFormData()
-        .title("结构")
-        .body(`§b${path}§r\n命名空间：§d${namespace}§r\n尺寸：§c${structure.size.x}§rx§a${structure.size.y}§rx§9${structure.size.z}§r （共计${structure.size.x * structure.size.y * structure.size.z}个方块）§r`)
-        .button("放置")
-        .button("重命名")
-        .button("复制")
-        .button("删除")
-        .button("关闭")
+        .title(RawMessageBuilder.translate("ui.structure.action.title"))
+        .body(RawMessageBuilder.translate("ui.structure.action.structureInformation", path, namespace, structure.size.x, structure.size.y, structure.size.z, structure.size.x * structure.size.y * structure.size.z))
+        .button(RawMessageBuilder.translate("ui.structure.action.place"))
+        .button(RawMessageBuilder.translate("ui.structure.action.rename"))
+        .button(RawMessageBuilder.translate("ui.structure.action.clone"))
+        .button(RawMessageBuilder.translate("ui.structure.action.delete"))
+        .button(RawMessageBuilder.translate("ui.common.close"))
         .show(player)
         .then(response => {
             if (response.canceled) {
@@ -161,9 +162,9 @@ export function showStructureActionForm(player: Player, sourceStructure: Structu
 
 function showRenameStructureForm(player: Player, structure: Structure) {
     new ModalFormData()
-        .title("重命名")
-        .textField("新的结构ID", "", { defaultValue: structure.id })
-        .submitButton("完成")
+        .title(RawMessageBuilder.translate("ui.structure.action.rename.title"))
+        .textField(RawMessageBuilder.translate("ui.structure.action.rename.new"), "", { defaultValue: structure.id })
+        .submitButton(RawMessageBuilder.translate("ui.common.ok"))
         .show(player)
         .then(response => {
             if (response.canceled) {
@@ -182,10 +183,10 @@ function showRenameStructureForm(player: Player, structure: Structure) {
 
 function showCloneStructureForm(player: Player, structure: Structure) {
     new ModalFormData()
-        .title("复制")
-        .textField("新的结构ID", "", { defaultValue: structure.id })
-        .toggle("保存至世界", { defaultValue: true, tooltip: "若开启，新的结构将会被永久保存到世界中。若关闭，新的结构将会被临时保存至内存中。一旦你退出了世界，它就会永远消失。" })
-        .submitButton("完成")
+        .title(RawMessageBuilder.translate("ui.structure.action.clone.title"))
+        .textField(RawMessageBuilder.translate("ui.structure.action.clone.new"), "", { defaultValue: structure.id + "(1)" })
+        .toggle(RawMessageBuilder.translate("ui.structure.action.saveMode.toggle.label"), { defaultValue: true, tooltip: RawMessageBuilder.translate("ui.structure.action.saveMode.toggle.tooltip")})
+        .submitButton(RawMessageBuilder.translate("ui.common.ok"))
         .show(player)
         .then(response => {
             if (response.canceled) {
@@ -205,9 +206,10 @@ function showCloneStructureForm(player: Player, structure: Structure) {
 
 function showDeleteStructureForm(player: Player, structure: Structure) {
     new ActionFormData()
-        .body(`你确定要删除结构 ${structure.id} 吗？`)
-        .button("确定")
-        .button("取消")
+        .title(RawMessageBuilder.translate("ui.structure.action.delete.title"))
+        .body(RawMessageBuilder.translate("ui.structure.action.delete.message", structure.id))
+        .button(RawMessageBuilder.translate("ui.common.ok"))
+        .button(RawMessageBuilder.translate("ui.common.cancel"))
         .show(player)
         .then(response => {
             if (response.canceled) {
@@ -232,9 +234,9 @@ function showDeleteStructureForm(player: Player, structure: Structure) {
 
 export function showErrorForm(player: Player, message: string | RawMessage, callback: () => void) {
     new ActionFormData()
-        .title("错误")
+        .title(RawMessageBuilder.translate("ui.error.title"))
         .body(message)
-        .button("确定")
+        .button(RawMessageBuilder.translate("ui.common.ok"))
         .show(player)
         .then(() => {
             callback();
@@ -243,10 +245,10 @@ export function showErrorForm(player: Player, message: string | RawMessage, call
 
 function showUseNewForm(player: Player) {
     new ActionFormData()
-        .title("提示")
-        .body("新的 Ore UI 风格表单仍然在测试中，在使用过程中可能会出现一些未知的问题。\n\n目前已知问题：\n在“基础游戏版本”（常见于由模板创建的世界）低于26.30时新表单无法正常工作。\n\n如果新表单出现问题可以使用命令/smanager-config useNewForm false手动关闭。你确定要继续吗？")
-        .button("确定")
-        .button("取消")
+        .title(RawMessageBuilder.translate("ui.browse.useNewForm.title"))
+        .body(RawMessageBuilder.translate("ui.browse.useNewForm.message"))
+        .button(RawMessageBuilder.translate("ui.common.yes"))
+        .button(RawMessageBuilder.translate("ui.common.no"))
         .show(player)
         .then(response => {
             if (response.canceled) {

@@ -4,6 +4,8 @@ import { showBrowseForm, showErrorForm } from "./browse.js";
 import { hasStructure, overrideStructure } from "../../utils/structure.js";
 import { Vector3Utils } from "../../lib/math/minecraft-math.js";
 import { startSelectSave } from "../../utils/preview.js";
+import { RawMessageBuilder } from "../../utils/str.js";
+import { ErrorWithRawMessage } from "../../utils/error.js";
 
 interface createData {
     structureId?: string
@@ -19,10 +21,10 @@ export function showCreateForm(player: Player, data?: createData) {
         data = {};
     }
     const form = new ModalFormData()
-        .title("创建新结构 - 1/4")
-        .label("这会在你的世界中创建一个新的结构。\n\n")
-        .textField("欲保存的结构名", data?.structureId ? data.structureId : "")
-        .submitButton("下一步");
+        .title(RawMessageBuilder.translate("ui.structure.action.create.1.title"))
+        .label(RawMessageBuilder.translate("ui.structure.action.create.1.message"))
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.1.structureId"), data?.structureId ? data.structureId : "")
+        .submitButton(RawMessageBuilder.translate("ui.common.next"));
     form.show(player).then(response => next(response));
     
     async function next(response: ModalFormResponse) {
@@ -33,10 +35,10 @@ export function showCreateForm(player: Player, data?: createData) {
         const structureId = response.formValues![1] as string;
         if (hasStructure(structureId)) {
             const response2 = await new ActionFormData()
-                .title("覆盖？")
-                .body(`世界上已经存在一个名为${structureId}的结构了，你确定要覆盖它吗？`)
-                .button("确定")
-                .button("取消")
+                .title(RawMessageBuilder.translate("ui.structure.action.create.1.override.title"))
+                .body(RawMessageBuilder.translate("ui.structure.action.create.1.override.message", structureId))
+                .button(RawMessageBuilder.translate("ui.common.yes"))
+                .button(RawMessageBuilder.translate("ui.common.no"))
                 .show(player);
             
             if (response2.canceled) {
@@ -62,11 +64,11 @@ export function showCreateForm(player: Player, data?: createData) {
 
 function showCreateForm2(player: Player, data: createData) {
     const form = new ActionFormData()
-        .title("创建新结构 - 2/4")
-        .label("确定结构的体积尺寸\n\n你要如何确定结构的体积尺寸？")
-        .button("手动输入\n通过2个顶点确定区域")
-        .button("手动输入\n通过位置和尺寸确定区域")
-        .button("选取\n通过工具确定区域");
+        .title(RawMessageBuilder.translate("ui.structure.action.create.2.title"))
+        .label(RawMessageBuilder.text("ui.structure.action.create.2.message"))
+        .button(RawMessageBuilder.translate("ui.structure.action.create.2.action.1"))
+        .button(RawMessageBuilder.translate("ui.structure.action.create.2.action.2"))
+        .button(RawMessageBuilder.translate("ui.structure.action.create.2.action.3"));
     form.show(player).then(response => next(response))
 
     async function next(response: ActionFormResponse) {
@@ -98,15 +100,15 @@ function showCreateForm2(player: Player, data: createData) {
 
 function showCreateForm2points(player: Player, data: createData) {
     const form = new ModalFormData()
-        .title("创建新结构 - 2/4")
-        .label("通过2个顶点确定区域\n\n")
-        .textField("起始点x", "0")
-        .textField("起始点y", "0")
-        .textField("起始点z", "0")
-        .textField("终止点x", "0")
-        .textField("终止点y", "0")
-        .textField("终止点z", "0")
-        .submitButton("下一步");
+        .title(RawMessageBuilder.translate("ui.structure.action.create.2.title"))
+        .label(RawMessageBuilder.translate("ui.structure.action.create.2.action.1.message"))
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.1.from.x"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.1.from.y"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.1.from.z"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.1.to.x"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.1.to.y"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.1.to.z"), "0")
+        .submitButton(RawMessageBuilder.translate("ui.common.next"));
     form.show(player).then(response => next(response));
     
     async function next(response: ModalFormResponse) {
@@ -117,29 +119,29 @@ function showCreateForm2points(player: Player, data: createData) {
         try {
             const formValues = response.formValues as string[];
             const pos1x = Number(formValues[1]);
-            if (!isFinite(pos1x)) throw new Error("起始点x必须是一个有效的数字。");
+            if (!isFinite(pos1x)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.1.from.x")});
             
             const pos1y = Number(formValues[2]);
-            if (!isFinite(pos1y)) throw new Error("起始点y必须是一个有效的数字。");
+            if (!isFinite(pos1y)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.1.from.y")});
             
             const pos1z = Number(formValues[3]);
-            if (!isFinite(pos1z)) throw new Error("起始点z必须是一个有效的数字。");
+            if (!isFinite(pos1z)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.1.from.z")});
             
             const pos2x = Number(formValues[4]);
-            if (!isFinite(pos2x)) throw new Error("终止点x必须是一个有效的数字。");
+            if (!isFinite(pos2x)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.1.to.x")});
 
             const pos2y = Number(formValues[5]);
-            if (!isFinite(pos2y)) throw new Error("终止点y必须是一个有效的数字。");
+            if (!isFinite(pos2y)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.1.to.y")})
 
             const pos2z = Number(formValues[6]);
-            if (!isFinite(pos2z)) throw new Error("终止点z必须是一个有效的数字。");
+            if (!isFinite(pos2z)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.1.to.z")})
         
             data.pos1 = {x: pos1x, y: pos1y, z: pos1z};
             data.pos2 = {x: pos1x, y: pos2y, z: pos2z};
 
             showCreateForm3(player, data);
         } catch (e) {
-            showErrorForm(player, (e as Error).message, () => {
+            showErrorForm(player, (e as ErrorWithRawMessage).rawMessage, () => {
                 form.show(player).then(response => next(response));
             });
         }
@@ -148,15 +150,15 @@ function showCreateForm2points(player: Player, data: createData) {
 
 function showCreateForm2size(player: Player, data: createData) {
     const form = new ModalFormData()
-        .title("创建新结构 - 2/4")
-        .label("通过位置和尺寸确定区域\n\n")
-        .textField("起始点x", "0")
-        .textField("起始点y", "0")
-        .textField("起始点z", "0")
-        .textField("尺寸x", "0")
-        .textField("尺寸y", "0")
-        .textField("尺寸z", "0")
-        .submitButton("下一步");
+        .title(RawMessageBuilder.translate("ui.structure.action.create.2.title"))
+        .label(RawMessageBuilder.translate("ui.structure.action.create.2.action.2.message"))
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.2.location.x"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.2.location.y"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.2.location.z"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.2.size.x"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.2.size.y"), "0")
+        .textField(RawMessageBuilder.translate("ui.structure.action.create.2.action.2.size.z"), "0")
+        .submitButton(RawMessageBuilder.translate("ui.common.next"));
     form.show(player).then(response => next(response));
     
     async function next(response: ModalFormResponse) {
@@ -167,29 +169,29 @@ function showCreateForm2size(player: Player, data: createData) {
         try {
             const formValues = response.formValues as string[];
             const posx = Number(formValues[1]);
-            if (!isFinite(posx)) throw new Error("起始点x必须是一个有效的数字。");
+            if (!isFinite(posx)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.2.location.x")});
             
             const posy = Number(formValues[2]);
-            if (!isFinite(posy)) throw new Error("起始点y必须是一个有效的数字。");
+            if (!isFinite(posy)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.2.location.y")});
             
             const posz = Number(formValues[3]);
-            if (!isFinite(posz)) throw new Error("起始点z必须是一个有效的数字。");
+            if (!isFinite(posz)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.2.location.z")});
             
             const sizex = Number(formValues[4]);
-            if (!isFinite(sizex)) throw new Error("尺寸x必须是一个有效的数字。");
+            if (!isFinite(sizex)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.2.size.x")});
 
             const sizey = Number(formValues[5]);
-            if (!isFinite(sizey)) throw new Error("尺寸y必须是一个有效的数字。");
+            if (!isFinite(sizey)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.2.size.y")});
 
             const sizez = Number(formValues[6]);
-            if (!isFinite(sizez)) throw new Error("尺寸z必须是一个有效的数字。");
+            if (!isFinite(sizez)) throw new ErrorWithRawMessage({translate: "ui.error.message.invalid.number", with: RawMessageBuilder.translate("ui.structure.action.create.2.action.2.size.z")});
         
             data.pos1 = {x: posx, y: posy, z: posz};
             data.pos2 = Vector3Utils.add(data.pos1, {x: sizex - 1, y: sizey - 1, z: sizez - 1});
 
             showCreateForm3(player, data);
         } catch (e) {
-            showErrorForm(player, (e as Error).message, () => {
+            showErrorForm(player, (e as ErrorWithRawMessage).rawMessage, () => {
                 form.show(player).then(response => next(response));
             });
         }
@@ -199,12 +201,12 @@ function showCreateForm2size(player: Player, data: createData) {
 
 function showCreateForm3(player: Player, data: createData) {
     const form = new ModalFormData()
-        .title("创建新结构 - 3/4")
-        .label("额外的保存选项\n\n")
-        .toggle("包括方块", {defaultValue: true})
-        .toggle("包括实体", {defaultValue: true})
-        .toggle("保存至世界", {defaultValue: true, tooltip: "若开启，新的结构将会被永久保存到世界中。若关闭，新的结构将会被临时保存至内存中。一旦你退出了世界，它就会永远消失。"})
-        .submitButton("下一步");
+        .title(RawMessageBuilder.translate("ui.structure.action.create.3.title"))
+        .label(RawMessageBuilder.translate("ui.structure.action.create.3.message"))
+        .toggle(RawMessageBuilder.translate("ui.structure.action.include.blocks.toggle.label"), {defaultValue: true})
+        .toggle(RawMessageBuilder.translate("ui.structure.action.include.entities.toggle.label"), {defaultValue: true})
+        .toggle(RawMessageBuilder.translate("ui.structure.action.saveMode.toggle.label"), {defaultValue: true, tooltip: RawMessageBuilder.translate("ui.structure.action.saveMode.toggle.tooltip")})
+        .submitButton(RawMessageBuilder.translate("ui.common.next"));
     form.show(player).then(response => next(response));
     
     async function next(response: ModalFormResponse) {
@@ -232,16 +234,16 @@ function showCreateForm4(player: Player, data: createData) {
             data.saveMode!
         );
         new ActionFormData()
-            .title("创建新结构 - 4/4")
-            .body("你的结构已经保存。")
-            .button("确定")
+            .title(RawMessageBuilder.translate("ui.structure.action.create.4.title"))
+            .body(RawMessageBuilder.translate("ui.structure.action.create.4.message"))
+            .button(RawMessageBuilder.translate("ui.common.ok"))
             .show(player)
             .then(() => showBrowseForm(player));
     } catch (e) {
         new ActionFormData()
-            .title("发生致命错误！")
-            .body(`你的结构在保存时出现了异常情况，请重新尝试。\n\n错误详情：\n${(e as Error).message}`)
-            .button("确定")
+            .title(RawMessageBuilder.translate("ui.structure.action.create.4.error.title"))
+            .body(RawMessageBuilder.translate("ui.structure.action.create.4.error.message", (e as Error).message))
+            .button(RawMessageBuilder.translate("ui.common.ok"))
             .show(player)
             .then(() => showBrowseForm(player));
     }
