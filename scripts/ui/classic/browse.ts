@@ -1,7 +1,7 @@
 import { Player, RawMessage, Structure, StructureSaveMode, world } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 import { showCreateForm } from "./create.js";
-import { cloneStructure, deleteStructure, getAllStructureId, praseStructureId, renameStructure } from "../../utils/structure.js";
+import { cloneStructure, deleteStructure, getAllStructureId, getBlockStats, praseStructureId, renameStructure } from "../../utils/structure.js";
 import { showPlaceForm } from "./place.js";
 import { Config, setPlayerConfig } from "../../utils/config.js";
 import { RawMessageBuilder } from "../../utils/str.js";
@@ -132,6 +132,7 @@ export function showStructureActionForm(player: Player, sourceStructure: Structu
         .button(RawMessageBuilder.translate("ui.structure.action.place"))
         .button(RawMessageBuilder.translate("ui.structure.action.rename"))
         .button(RawMessageBuilder.translate("ui.structure.action.clone"))
+        .button(RawMessageBuilder.translate("ui.structure.action.stats"))
         .button(RawMessageBuilder.translate("ui.structure.action.delete"))
         .button(RawMessageBuilder.translate("ui.common.close"))
         .show(player)
@@ -151,9 +152,12 @@ export function showStructureActionForm(player: Player, sourceStructure: Structu
                     showCloneStructureForm(player, structure);
                     break;
                 case 3:
-                    showDeleteStructureForm(player, structure);
+                    showStructureStatsForm(player, structure);
                     break;
                 case 4:
+                    showDeleteStructureForm(player, structure);
+                    break;
+                case 5:
                     showBrowseStructureForm(player);
                     break;
             }
@@ -232,15 +236,28 @@ function showDeleteStructureForm(player: Player, structure: Structure) {
         });
 }
 
+async function showStructureStatsForm(player: Player, structure: Structure) {
+    const form = new ActionFormData()
+        .title(RawMessageBuilder.translate("ui.structure.action.stats.title"))
+        .label(RawMessageBuilder.translate("ui.structure.action.stats.message", structure.id))
+    for (const element of await getBlockStats(structure)) {
+        form.label({translate:"ui.structure.action.stats.stats", with: { rawtext: [
+            RawMessageBuilder.translate(element[0].type.localizationKey),
+            RawMessageBuilder.text(element[1].toString())
+        ]}});
+    }
+    form.button(RawMessageBuilder.translate("ui.common.ok"))
+        .show(player)
+        .then(() => showStructureActionForm(player, structure));
+}
+
 export function showErrorForm(player: Player, message: string | RawMessage, callback: () => void) {
     new ActionFormData()
         .title(RawMessageBuilder.translate("ui.error.title"))
         .body(message)
         .button(RawMessageBuilder.translate("ui.common.ok"))
         .show(player)
-        .then(() => {
-            callback();
-        })
+        .then(callback)
 }
 
 function showUseNewForm(player: Player) {

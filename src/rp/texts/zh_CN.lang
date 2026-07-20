@@ -42,6 +42,7 @@ ui.structure.action.place=放置
 ui.structure.action.rename=重命名
 ui.structure.action.clone=复制
 ui.structure.action.delete=删除
+ui.structure.action.stats=统计信息
 
 ui.structure.action.saveMode.label=保存模式
 ui.structure.action.saveMode.world.label=保存至世界
@@ -81,6 +82,10 @@ ui.structure.action.clone.new=新的结构ID
 
 ui.structure.action.delete.title=删除
 ui.structure.action.delete.message=你确定要删除结构 %s 吗？
+
+ui.structure.action.stats.title=统计信息
+ui.structure.action.stats.message=结构 %s 拥有以下方块：
+ui.structure.action.stats.stats=§b%1§r：共有 §a%2§r 个
 
 ui.error.title=错误
 ui.error.message.invalid.number=%s 必须是一个有效的数字。
@@ -181,3 +186,5 @@ tool.complete.selectPlace.fail.message=你还没有选取位置
 
 tool.structureRotation.selectPlace.actionbarMessage=右键/使用 - 下一个旋转模式
 tool.structureRotation.selectPlace.message=旋转模式：%s
+
+error.get.structure.message=找不到指定的结构

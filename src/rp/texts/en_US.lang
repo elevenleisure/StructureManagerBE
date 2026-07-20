@@ -42,6 +42,7 @@ ui.structure.action.place=Place
 ui.structure.action.rename=Rename
 ui.structure.action.clone=Clone
 ui.structure.action.delete=Delete
+ui.structure.action.stats=Statistic
 
 ui.structure.action.saveMode.label=Save mode
 ui.structure.action.saveMode.world.label=Save to world
@@ -81,6 +82,10 @@ ui.structure.action.clone.new=New structure ID
 
 ui.structure.action.delete.title=Delete
 ui.structure.action.delete.message=Are you sure you want to delete the structure %s?
+
+ui.structure.action.stats.title=Statistic
+ui.structure.action.stats.message=Structure %s has the following blocks:
+ui.structure.action.stats.stats=§b%1§r: §a%2§r
 
 ui.error.title=Error
 ui.error.message.invalid.number=%s must be a valid number.
@@ -180,3 +185,5 @@ tool.complete.selectPlace.fail.message=You haven't selected a placement location
 
 tool.structureRotation.selectPlace.actionbarMessage=Use - Next rotation mode
 tool.structureRotation.selectPlace.message=Rotation mode: %s
+
+error.get.structure.message=Can't get the specified structure.
