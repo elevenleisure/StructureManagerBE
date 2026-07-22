@@ -6,53 +6,24 @@ import { cloneStructure, deleteStructure, getAllStructureId, praseStructureId, r
 import { showCreate } from "./create.js";
 import { showPlace } from "./place.js";
 import { RawMessageBuilder } from "../../utils/str.js";
-import { StructureSaveModeDropdown } from "./component.js";
+import { structureDialogItem, StructureSaveModeDropdown } from "./component.js";
+import { ListDialog } from "../../lib/ui/listDialog.js";
 
 export function showBrowse(player: Player) {
     const structureManager = world.structureManager;
-    const structureComponentGroupMap: Record<string, DialogComponentGroup> = {};
-
-    const dialog = new Dialog(player, RawMessageBuilder.translate("ui.browse.title"));
-
-    const search = new DialogTextField(RawMessageBuilder.translate("ui.browse.search"));
-    search.onChange = text => {
-        for (const key in structureComponentGroupMap) {
-            if (Object.prototype.hasOwnProperty.call(structureComponentGroupMap, key)) {
-                const element = structureComponentGroupMap[key];
-                element.visible = key.includes(text.trim());
-            }
-        }
-    };
-
-    dialog.add(
-        search,
-        new DialogSpacer(),
-        new DialogButton(RawMessageBuilder.translate("ui.browse.create"), () => showCreate(player), true),
-        new DialogDivider(),
-        new DialogSpacer(),
-    );
-
-    getAllStructureId().forEach(structureId => {
-        const { namespace, path } = praseStructureId(structureId);
-        const structure = structureManager.get(structureId);
-        if (!structure || !structure.isValid) return;
-        const btn = new DialogButton(RawMessageBuilder.translate("ui.browse.structure.view"), () => showStructureAction(player, structure), true);
-        const group = new DialogComponentGroup(
-            new DialogLabel(` §b${path}`),
+    new ListDialog(
+        player,
+        RawMessageBuilder.translate("ui.browse.title"),
+        new structureDialogItem(),
+        getAllStructureId(),
+        new DialogComponentGroup(
             new DialogSpacer(),
-            new DialogLabel(RawMessageBuilder.translate("ui.browse.structure.structureInformation.new.namespace", namespace)),
+            new DialogButton(RawMessageBuilder.translate("ui.browse.create"), () => showCreate(player), true),
+            new DialogDivider(),
             new DialogSpacer(),
-            new DialogLabel(RawMessageBuilder.translate("ui.browse.structure.structureInformation.new.blocks", structure.size.x * structure.size.y * structure.size.z)),
-            new DialogSpacer(),
-            btn,
-            new DialogDivider()
-        );
-        structureComponentGroupMap[structureId] = group;
-        dialog.add(group);
-    });
-    
-
-    dialog.closeButton().show();
+        ),
+        undefined,
+    ).closeButton().show();
 }
 
 export function showStructureAction(player: Player, sourceStructure: Structure | string) {
@@ -126,13 +97,13 @@ function showDeleteStructure(player: Player, structure: Structure) {
                 showError(player, (e as Error).message, () => showStructureAction(player, structure));
             }
         }, true)
-    ).setOnClose(() => showStructureAction(player, structure)).closeButton().show();
+    ).setOnClose(() => showBrowse(player)).closeButton().show();
 }
 
 export function showError(player: Player, errorMessage: string, callback?: (reason: DataDrivenScreenClosedReason) => void) {
     new Dialog(player, RawMessageBuilder.translate("ui.error.title"))
-        .setOnClose(callback)
         .add(new DialogSpacer(), new DialogLabel(`§c${errorMessage}`))
+        .setOnClose(callback)
         .closeButton()
         .show();
 }

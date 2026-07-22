@@ -1,7 +1,39 @@
-import { CustomForm, UIRawMessage } from "@minecraft/server-ui";
-import { DialogComponentGroup, DialogDropdown, DialogDropdownItem, DialogInteractiveComponent, DialogTextField } from "../../lib/ui/dialogComponent.js";
-import { RawMessage, StructureSaveMode, Vector3 } from "@minecraft/server";
+import { UIRawMessage } from "@minecraft/server-ui";
+import { DialogButton, DialogComponentGroup, DialogDivider, DialogDropdown, DialogDropdownItem, DialogLabel, DialogSpacer, DialogTextField } from "../../lib/ui/dialogComponent.js";
+import { Player, RawMessage, StructureSaveMode, Vector3, world } from "@minecraft/server";
 import { RawMessageBuilder } from "../../utils/str.js";
+import { ListDialogItem } from "../../lib/ui/listDialog.js";
+import { praseStructureId } from "../../utils/structure.js";
+import { showStructureAction } from "./browse.js";
+
+export class structureDialogItem extends ListDialogItem<String> {
+    public itemComponentsTemp: DialogComponentGroup = new DialogComponentGroup(
+        new DialogLabel(""),
+        new DialogSpacer(),
+        new DialogLabel({}),
+        new DialogSpacer(),
+        new DialogLabel({}),
+        new DialogSpacer(),
+        new DialogButton(RawMessageBuilder.translate("ui.browse.structure.view"), undefined, true),
+        new DialogDivider()
+    );
+
+    public bindingComponent(player: Player, item: string, components: DialogComponentGroup): void {
+        const structure = world.structureManager.get(item);
+        const { namespace, path } = praseStructureId(item);
+        (components.components[0] as DialogLabel).label = ` §b${path}`;
+        (components.components[2] as DialogLabel).label = RawMessageBuilder.translate("ui.browse.structure.structureInformation.new.namespace", namespace);
+
+        if (!(structure && structure.isValid)) {
+            (components.components[4] as DialogLabel).label = RawMessageBuilder.translate("error.structure.invalid.id");
+            (components.components[6] as DialogButton).visible = false;
+        } else {
+            (components.components[4] as DialogLabel).label = RawMessageBuilder.translate("ui.browse.structure.structureInformation.new.blocks", structure.size.x * structure.size.y * structure.size.z);
+            (components.components[6] as DialogButton).visible = true;
+            (components.components[6] as DialogButton).onClick = () => showStructureAction(player, structure);
+        }
+    }
+}
 
 export class NumberTextField extends DialogTextField {
     constructor(label: string | UIRawMessage, defaultValue?: number) {

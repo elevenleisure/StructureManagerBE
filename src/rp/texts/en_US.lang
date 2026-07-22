@@ -6,6 +6,12 @@ item.smanager:extension_tool=expand tool
 item.smanager:contraction_tool=contract tool
 item.smanager:move_tool=translate tool
 
+dduilib.ui.dialog.list.previousPage=< Previous
+dduilib.ui.dialog.list.nextPage=Next >
+dduilib.ui.dialog.list.pageInfo=page %1 of %2
+dduilib.ui.dialog.list.jumpTo=Jump to...
+dduilib.ui.dialog.list.jump=Jump
+
 ui.common.ok=Ok
 ui.common.yes=Yes
 ui.common.no=No
@@ -187,3 +193,4 @@ tool.structureRotation.selectPlace.actionbarMessage=Use - Next rotation mode
 tool.structureRotation.selectPlace.message=Rotation mode: %s
 
 error.get.structure.message=Can't get the specified structure.
+error.structure.invalid.id=§cThis structure is inactive and can't be viewed.

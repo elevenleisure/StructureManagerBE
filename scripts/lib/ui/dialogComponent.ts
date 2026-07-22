@@ -1,21 +1,12 @@
 import { CustomForm, DropdownItemData, ObservableBoolean, ObservableNumber, ObservableString, ObservableUIRawMessage, UIRawMessage } from "@minecraft/server-ui";
 import { toObservableRawMessage } from "./utils/observableUtils.js";
+import { RawMessage } from "@minecraft/server";
 
 export abstract class DialogComponent {
-    private attributes: Record<string, unknown> = {};
-
     public abstract addToCustomForm(customForm: CustomForm): void;
     public abstract set visible(visible: boolean);
     public abstract get visible(): boolean;
-    public setAttribute(key: string, value: unknown) {
-        this.attributes[key] = value;
-    }
-    public getAttribute(key: string) {
-        return this.attributes[key];
-    }
-    public removeAttribute(key: string) {
-        return delete this.attributes[key];
-    }
+    public abstract clone(): DialogComponent;
 }
 
 export abstract class DialogBasicComponent extends DialogComponent {
@@ -125,14 +116,20 @@ export class DialogComponentGroup extends DialogComponent {
             component.addToCustomForm(customForm);
         });
     }
+
+    public clone(): DialogComponentGroup {
+        return new DialogComponentGroup(...this.components.map(component => component.clone()));
+    }
 }
 
 export class DialogButton extends DialogInteractiveComponent {
+    protected _tooltip: ObservableUIRawMessage | undefined;
     public onClick: (() => void) | undefined;
     public closeDialogAfterClick: boolean;
 
-    constructor(label: string | UIRawMessage, onClick: (() => void) | undefined, closeDialogAfterClick?: boolean) {
+    constructor(label: string | UIRawMessage, onClick?: (() => void) | undefined, closeDialogAfterClick?: boolean) {
         super(label);
+        this._tooltip = undefined;
         this.onClick = onClick;
         this.closeDialogAfterClick = closeDialogAfterClick ?? false;
     }
@@ -146,10 +143,23 @@ export class DialogButton extends DialogInteractiveComponent {
             if (this.closeDialogAfterClick) customForm.close();
             this.click();
         }, {
-            tooltip: this._description,
+            tooltip: this._tooltip,
             disabled: this._disabled,
             visible: this._visible
         });
+    }
+
+    public set tooltip(tooltip: RawMessage) {
+        if (!this._tooltip) this._tooltip = new ObservableUIRawMessage(tooltip);
+        else this._tooltip.setData(tooltip);
+    }
+
+    public clone(): DialogButton {
+        const cloned = new DialogButton(this._label.getData(), this.onClick, this.closeDialogAfterClick);
+        if (this._description) cloned.description = this._description.getData();
+        cloned.disabled = this._disabled.getData();
+        cloned.visible = this._visible.getData();
+        return cloned;
     }
 }
 
@@ -162,6 +172,12 @@ export class DialogDivider extends DialogBasicComponent {
         customForm.divider({
             visible: this._visible
         });
+    }
+
+    public clone(): DialogDivider {
+        const cloned = new DialogDivider();
+        cloned.visible = this._visible.getData();
+        return cloned;
     }
 }
 
@@ -203,6 +219,15 @@ export class DialogDropdown extends DialogInteractiveComponent {
             disabled: this._disabled,
             visible: this._visible
         });
+    }
+
+    public clone(): DialogDropdown {
+        const cloned = new DialogDropdown(this._label.getData(), this.items.map(item => item.clone()), this._currentItemIndex.getData());
+        cloned.onChange = this.onChange;
+        if (this._description) cloned.description = this._description.getData();
+        cloned.disabled = this._disabled.getData();
+        cloned.visible = this._visible.getData();
+        return cloned;
     }
 }
 
@@ -249,6 +274,11 @@ export class DialogDropdownItem {
     public get stringdescription(): string | undefined {
         return this._description?.getData().text;
     }
+
+    public clone(): DialogDropdownItem {
+        const cloned = new DialogDropdownItem(this._label.getData(), this._description?.getData());
+        return cloned;
+    }
 }
 
 export class DialogLabel extends DialogBasicComponent {
@@ -280,6 +310,12 @@ export class DialogLabel extends DialogBasicComponent {
             visible: this._visible
         });
     }
+
+    public clone(): DialogLabel {
+        const cloned = new DialogLabel(this._label.getData());
+        cloned.visible = this._visible.getData();
+        return cloned;
+    }
 }
 
 export class DialogHeader extends DialogLabel {
@@ -291,6 +327,10 @@ export class DialogHeader extends DialogLabel {
         customForm.header(this._label, {
             visible: this._visible
         });
+    }
+
+    public clone(): DialogHeader {
+        return super.clone();
     }
 }
 
@@ -354,6 +394,15 @@ export class DialogSlider extends DialogInteractiveComponent {
             visible: this._visible
         });
     }
+
+    public clone(): DialogSlider {
+        const cloned = new DialogSlider(this._label.getData(), this._min.getData(), this._max.getData(), this._currentValue.getData(), this._step.getData());
+        cloned.onChange = this.onChange;
+        if (this._description) cloned.description = this._description.getData();
+        cloned.disabled = this._disabled.getData();
+        cloned.visible = this._visible.getData();
+        return cloned;
+    }
 }
 
 export class DialogSpacer extends DialogBasicComponent {
@@ -365,6 +414,12 @@ export class DialogSpacer extends DialogBasicComponent {
         customForm.spacer({
             visible: this._visible
         });
+    }
+
+    public clone(): DialogSpacer {
+        const cloned = new DialogSpacer();
+        cloned.visible = this._visible.getData();
+        return cloned;
     }
 }
 
@@ -397,6 +452,15 @@ export class DialogTextField extends DialogInteractiveComponent {
             visible: this._visible
         });
     }
+
+    public clone(): DialogTextField {
+        const cloned = new DialogTextField(this._label.getData(), this._text.getData());
+        cloned.onChange = this.onChange;
+        if (this._description) cloned.description = this._description.getData();
+        cloned.disabled = this._disabled.getData();
+        cloned.visible = this._visible.getData();
+        return cloned;
+    }
 }
 
 export class DialogToggle extends DialogInteractiveComponent {
@@ -427,5 +491,14 @@ export class DialogToggle extends DialogInteractiveComponent {
             disabled: this._disabled,
             visible: this._visible
         });
+    }
+
+    public clone(): DialogToggle {
+        const cloned = new DialogToggle(this._label.getData(), this._toggled.getData());
+        cloned.onChange = this.onChange;
+        if (this._description) cloned.description = this._description.getData();
+        cloned.disabled = this._disabled.getData();
+        cloned.visible = this._visible.getData();
+        return cloned;
     }
 }

@@ -6,6 +6,12 @@ item.smanager:extension_tool=扩展工具
 item.smanager:contraction_tool=收缩工具
 item.smanager:move_tool=移动工具
 
+dduilib.ui.dialog.list.previousPage=< 上一页
+dduilib.ui.dialog.list.nextPage=下一页 >
+dduilib.ui.dialog.list.pageInfo=第 %1/%2 页
+dduilib.ui.dialog.list.jumpTo=跳转至...
+dduilib.ui.dialog.list.jump=跳转
+
 ui.common.ok=确定
 ui.common.yes=确定
 ui.common.no=取消
@@ -188,3 +194,4 @@ tool.structureRotation.selectPlace.actionbarMessage=右键/使用 - 下一个旋
 tool.structureRotation.selectPlace.message=旋转模式：%s
 
 error.get.structure.message=找不到指定的结构
+error.structure.invalid.id=§c该结构处于无效状态，无法查看
